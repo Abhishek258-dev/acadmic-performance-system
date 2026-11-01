@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APARMS | Faculty Dashboard</title>
+</head>
+<body>
+    <h1>Faculty Dashboard</h1>
+    <p>Welcome to the Faculty Panel.</p>
+
+    <h2>Faculty Panel</h2>
+    <ul>
+        <li>View Assigned Subjects</li>
+        <li>Enter Student Marks</li>
+        <li>Manage Academic Records</li>
+        <li>View Student Performance</li>
+    </ul>
+
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        const user = JSON.parse(sessionStorage.getItem("user") || "null");
+
+        if (!user || user.role !== "faculty" ||
+            !sessionStorage.getItem("token")) {
+            window.location.replace("login.html");
+        } else {
+            document.querySelector("h1").textContent =
+                "Welcome, " + user.name;
+        }
+
+        function logout() {
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("user");
+            window.location.replace("login.html");
+        }
+    </script>
+</body>
+</html>

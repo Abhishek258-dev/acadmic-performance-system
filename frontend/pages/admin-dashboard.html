@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APARMS | Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+
+    <style>
+        .student-table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        .student-table th,
+        .student-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .student-table th {
+            background: #f3f6fb;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .student-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .student-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 18px 0;
+        }
+
+        .student-search {
+            padding: 11px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            min-width: 240px;
+            max-width: 100%;
+            font-size: 14px;
+        }
+
+        .refresh-students {
+            padding: 11px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .refresh-students:hover {
+            background: #1d4ed8;
+        }
+
+        .student-message,
+        #reportMessage,
+        #reportCount {
+            color: #64748b;
+            margin: 10px 0;
+        }
+
+        .empty-message {
+            padding: 24px !important;
+            text-align: center !important;
+            color: #64748b;
+        }
+
+        .report-filters {
+            justify-content: flex-start;
+        }
+
+        .report-filters select {
+            min-width: 160px;
+            max-width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .report-stats-grid {
+            margin-top: 20px;
+        }
+
+        .report-table-heading {
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            .report-filters {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .report-filters select,
+            .report-filters button {
+                width: 100%;
+            }
+        }
+        .student-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.student-form-grid input {
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.student-form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+#addStudentForm {
+    margin: 20px 0;
+    padding: 22px;
+}
+
+#addStudentForm[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    .student-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+
+<body>
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">A</div>
+            <div>
+                <h2>APARMS</h2>
+                <span>Admin Portal</span>
+            </div>
+        </div>
+
+        <div class="menu-label">MAIN MENU</div>
+
+        <nav>
+            <a href="#overview" class="nav-link active">
+                <span>▦</span> Dashboard
+            </a>
+            <a href="#students" class="nav-link">
+                <span>♙</span> Students
+            </a>
+            <a href="#faculty" class="nav-link">
+                <span>♧</span> Faculty
+            </a>
+            <a href="#results" class="nav-link">
+                <span>▤</span> Results
+            </a>
+            <a href="#reports" class="nav-link">
+                <span>▥</span> Reports
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="admin-mini">
+                <div class="avatar">A</div>
+                <div class="admin-mini-info">
+                    <strong id="sidebarName">Administrator</strong>
+                    <span>System Admin</span>
+                </div>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                ↪ &nbsp; Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content" id="overview">
+
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">ACADEMIC MANAGEMENT</p>
+                <h1 id="welcomeHeading">Admin Dashboard</h1>
+                <p class="header-subtitle">
+                    Manage academic performance from one place.
+                </p>
+            </div>
+
+            <div class="profile">
+                <div class="avatar profile-avatar">A</div>
+                <div>
+                    <strong id="profileName">Administrator</strong>
+                    <span>Administrator</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="welcome-banner">
+            <div>
+                <span class="banner-tag">ADMINISTRATION</span>
+                <h2>Welcome to APARMS 👋</h2>
+                <p>
+                    Monitor students, faculty and academic results
+                    through your administration panel.
+                </p>
+            </div>
+            <div class="banner-symbol">A</div>
+        </section>
+
+        <section class="section-heading">
+            <div>
+                <h2>Dashboard Overview</h2>
+                <p>Your academic management workspace</p>
+            </div>
+            <span class="status">
+                <span></span> System Portal
+            </span>
+        </section>
+
+        <!-- Dashboard Statistics -->
+        <section class="stats-grid">
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-icon blue">♙</span>
+                    <span class="stat-label">MANAGEMENT</span>
+                </div>
+                <h3>Total Students</h3>
+                <p class="live-count" id="totalStudents">Loading...</p>
+                <a href="#students">View student records →</a>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-icon purple">♧</span>
+                    <span class="stat-label">MANAGEMENT</span>
+                </div>
+                <h3>Total Faculty</h3>
+                <p class="live-count" id="totalFaculty">Loading...</p>
+                <a href="#faculty">View faculty records →</a>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-icon orange">▤</span>
+                    <span class="stat-label">ACADEMICS</span>
+                </div>
+                <h3>Total Results</h3>
+                <p class="live-count" id="totalResults">Loading...</p>
+                <a href="#results">View result records →</a>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-icon green">▥</span>
+                    <span class="stat-label">ANALYTICS</span>
+                </div>
+                <h3>Reports</h3>
+                <p>Review academic performance reports.</p>
+                <a href="#reports">Open section →</a>
+            </article>
+
+        </section>
+
+        <!-- Student Management -->
+        <section class="management-section" id="students">
+            <div class="section-heading">
+    <div>
+        <h2>Student Management</h2>
+        <p>Student records and academic information</p>
+    </div>
+
+    <button
+        type="button"
+        class="faculty-refresh-btn"
+        onclick="openAddStudentForm()">
+        + Add Student
+    </button>
+</div>
+<!-- Add Student Form -->
+<div id="addStudentForm" class="info-panel" hidden>
+    <h3>Add New Student</h3>
+
+    <form id="studentForm">
+        <div class="student-form-grid">
+
+            <input
+                type="text"
+                id="studentName"
+                placeholder="Full Name"
+                required
+            >
+
+            <input
+                type="email"
+                id="studentEmail"
+                placeholder="Email Address"
+                required
+            >
+
+            <input
+                type="password"
+                id="studentPassword"
+                placeholder="Initial Password"
+                minlength="8"
+                required
+            >
+
+            <input
+                type="text"
+                id="studentEnrollment"
+                placeholder="Enrollment Number"
+                required
+            >
+
+            <input
+                type="text"
+                id="studentRoll"
+                placeholder="Roll Number"
+                required
+            >
+
+            <input
+                type="number"
+                id="studentProgram"
+                placeholder="Program ID"
+                min="1"
+                required
+            >
+
+            <input
+                type="number"
+                id="studentSemester"
+                placeholder="Current Semester"
+                min="1"
+                required
+            >
+
+            <input
+                type="text"
+                id="studentSection"
+                placeholder="Section (e.g. A)"
+                required
+            >
+
+            <input
+                type="number"
+                id="studentAdmissionYear"
+                placeholder="Admission Year (e.g. 2026)"
+                min="2000"
+                max="2100"
+                required
+            >
+
+        </div>
+
+        <p id="addStudentMessage" role="status"></p>
+
+        <div class="student-form-actions">
+            <button type="submit" class="refresh-students">
+                Save Student
+            </button>
+
+            <button
+                type="button"
+                class="faculty-refresh-btn"
+                onclick="closeAddStudentForm()">
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>
+<!-- Edit Student Form -->
+<div id="editStudentForm" class="info-panel" hidden>
+    <h3>Edit Student Details</h3>
+
+    <form id="editStudentFormElement">
+        <input type="hidden" id="editStudentId">
+
+        <div class="student-form-grid">
+            <input type="text" id="editStudentName"
+                placeholder="Full Name" required>
+
+            <input type="email" id="editStudentEmail"
+                placeholder="Email Address" required>
+
+            <input type="text" id="editStudentEnrollment"
+                placeholder="Enrollment Number" required>
+
+            <input type="text" id="editStudentRoll"
+                placeholder="Roll Number" required>
+
+            <input type="number" id="editStudentProgram"
+                placeholder="Program ID" min="1" required>
+
+            <input type="number" id="editStudentSemester"
+                placeholder="Current Semester" min="1" required>
+
+            <input type="text" id="editStudentSection"
+                placeholder="Section" required>
+
+            <input type="number" id="editStudentAdmissionYear"
+                placeholder="Admission Year"
+                min="2000" max="2100" required>
+        </div>
+
+        <p id="editStudentMessage" role="status"></p>
+
+        <div class="student-form-actions">
+            <button type="submit" class="refresh-students">
+                Save Changes
+            </button>
+
+            <button
+                type="button"
+                class="faculty-refresh-btn"
+                onclick="closeEditStudentForm()">
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>
+            <div class="student-toolbar">
+                <input
+                    type="text"
+                    id="studentSearch"
+                    class="student-search"
+                    placeholder="Search name, enrollment, roll no..."
+                    aria-label="Search students"
+                >
+
+                <button
+                    type="button"
+                    class="refresh-students"
+                    onclick="loadStudents()"
+                >
+                    ↻ Refresh Students
+                </button>
+            </div>
+
+            <p id="studentMessage" class="student-message">
+                Loading student records...
+            </p>
+
+            <div class="student-table-container">
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Student Name</th>
+                            <th>Enrollment No.</th>
+                            <th>Roll No.</th>
+                            <th>Program</th>
+                            <th>Semester</th>
+                            <th>Section</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <tr>
+                            <td colspan="9" class="empty-message">
+                                Loading students...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Faculty Management -->
+        <section class="management-section" id="faculty">
+            <div class="section-heading">
+    <div>
+        <h2>Faculty Management</h2>
+        <p>Faculty profiles and staff information</p>
+    </div>
+
+    <div class="faculty-heading-actions">
+        <button
+            type="button"
+            class="faculty-refresh-btn"
+            onclick="openAddFacultyForm()"
+        >
+            + Add Faculty
+        </button>
+
+        <button
+            type="button"
+            class="faculty-refresh-btn"
+            onclick="loadFaculty()"
+        >
+            ↻ Refresh
+        </button>
+    </div>
+</div>
+<div id="addFacultyForm" class="faculty-form-container" hidden>
+    <h3>Add New Faculty</h3>
+
+    <form id="addFacultyFormElement">
+        <div class="faculty-form-grid">
+            <div>
+                <label for="newFacultyName">Full Name</label>
+                <input
+                    type="text"
+                    id="newFacultyName"
+                    required
+                    maxlength="100"
+                    placeholder="Enter full name"
+                >
+            </div>
+
+            <div>
+                <label for="newFacultyEmail">Email</label>
+                <input
+                    type="email"
+                    id="newFacultyEmail"
+                    required
+                    maxlength="150"
+                    placeholder="Enter email"
+                >
+            </div>
+
+            <div>
+                <label for="newFacultyPassword">Temporary Password</label>
+                <input
+                    type="password"
+                    id="newFacultyPassword"
+                    required
+                    minlength="8"
+                    placeholder="Minimum 8 characters"
+                    autocomplete="new-password"
+                >
+            </div>
+
+            <div>
+                <label for="newFacultyEmployeeCode">Employee Code</label>
+                <input
+                    type="text"
+                    id="newFacultyEmployeeCode"
+                    required
+                    maxlength="50"
+                    placeholder="Enter employee code"
+                >
+            </div>
+
+            <div>
+                <label for="newFacultyDepartment">Department</label>
+                <select id="newFacultyDepartment" required>
+                    <option value="">Select department</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="faculty-form-actions">
+            <button type="submit" class="faculty-refresh-btn">
+                Save Faculty
+            </button>
+
+            <button
+                type="button"
+                class="faculty-refresh-btn"
+                onclick="closeAddFacultyForm()"
+            >
+                Cancel
+            </button>
+        </div>
+
+        <p id="addFacultyMessage" role="status"></p>
+    </form>
+</div>
+<!-- EDIT FACULTY FORM -->
+<div id="editFacultyForm" class="faculty-form-container" hidden>
+    <h3>Edit Faculty</h3>
+
+    <form id="editFacultyFormElement">
+        <input type="hidden" id="editFacultyId">
+
+        <div class="faculty-form-grid">
+            <div>
+                <label for="editFacultyName">Full Name</label>
+                <input
+                    type="text"
+                    id="editFacultyName"
+                    required
+                    maxlength="100">
+            </div>
+
+            <div>
+                <label for="editFacultyEmail">Email</label>
+                <input
+                    type="email"
+                    id="editFacultyEmail"
+                    required
+                    maxlength="150">
+            </div>
+
+            <div>
+                <label for="editFacultyEmployeeCode">Employee Code</label>
+                <input
+                    type="text"
+                    id="editFacultyEmployeeCode"
+                    required
+                    maxlength="50">
+            </div>
+
+            <div>
+                <label for="editFacultyDepartment">Department</label>
+                <select id="editFacultyDepartment" required>
+                    <option value="">Loading departments...</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="editFacultyStatus">Account Status</label>
+                <select id="editFacultyStatus" required>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="faculty-form-actions">
+            <button type="submit" class="faculty-refresh-btn">
+                Save Changes
+            </button>
+
+            <button
+                type="button"
+                class="faculty-refresh-btn"
+                onclick="closeEditFacultyForm()">
+                Cancel
+            </button>
+        </div>
+
+        <p id="editFacultyMessage" role="status"></p>
+    </form>
+</div>
+            <div class="faculty-toolbar">
+                <input
+                    type="search"
+                    id="facultySearch"
+                    placeholder="Search by name, email or faculty ID..."
+                    aria-label="Search faculty"
+                >
+                <span id="facultyCount">Loading faculty...</span>
+            </div>
+
+            <div class="faculty-table-container">
+                <table class="faculty-table">
+                    <thead>
+                        <tr>
+                            <th>Faculty ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Account Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="facultyTableBody">
+                        <tr>
+                            <td colspan="5">Loading faculty records...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="facultyMessage" role="status"></p>
+        </section>
+
+        <!-- Result Management -->
+        <section class="management-section" id="results">
+            <div class="section-heading">
+                <div>
+                    <h2>Result Management</h2>
+                    <p>View and search student academic results</p>
+                </div>
+                <button
+                    type="button"
+                    class="faculty-refresh-btn"
+                    onclick="loadResults()"
+                >
+                    ↻ Refresh
+                </button>
+            </div>
+
+            <div class="faculty-toolbar">
+                <input
+                    type="search"
+                    id="resultSearch"
+                    placeholder="Search by enrollment, student name or status..."
+                    aria-label="Search results"
+                >
+                <span id="resultCount">Loading results...</span>
+            </div>
+
+            <div class="faculty-table-container">
+                <table class="faculty-table">
+                    <thead>
+                        <tr>
+                            <th>Enrollment No.</th>
+                            <th>Student Name</th>
+                            <th>Semester</th>
+                            <th>Academic Year</th>
+                            <th>Total Marks</th>
+                            <th>Percentage</th>
+                            <th>SGPA</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultTableBody">
+                        <tr>
+                            <td colspan="8">Loading results...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="resultMessage" role="status"></p>
+        </section>
+
+        <!-- Academic Reports -->
+        <section class="management-section" id="reports">
+            <div class="section-heading">
+                <div>
+                    <h2>Academic Reports</h2>
+                    <p>Performance analytics and semester-wise summaries</p>
+                </div>
+
+                <button
+                    type="button"
+                    class="faculty-refresh-btn"
+                    onclick="loadResults()"
+                >
+                    ↻ Refresh Reports
+                </button>
+            </div>
+
+            <div class="faculty-toolbar report-filters">
+                <select id="reportYear" aria-label="Filter by academic year">
+                    <option value="">All Academic Years</option>
+                </select>
+
+                <select id="reportSemester" aria-label="Filter by semester">
+                    <option value="">All Semesters</option>
+                </select>
+
+                <select id="reportStatus" aria-label="Filter by result status">
+                    <option value="">All Statuses</option>
+                    <option value="PASS">Pass</option>
+                    <option value="FAIL">Fail</option>
+                    <option value="WITHHELD">Withheld</option>
+                </select>
+
+                <button
+                    type="button"
+                    class="faculty-refresh-btn"
+                    onclick="resetReportFilters()"
+                >
+                    Reset Filters
+                </button>
+            </div>
+
+            <p id="reportMessage" role="status"></p>
+
+            <div class="stats-grid report-stats-grid">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon blue">▤</span>
+                        <span class="stat-label">RESULTS</span>
+                    </div>
+                    <h3>Total Results</h3>
+                    <p class="live-count" id="reportTotal">0</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon green">✓</span>
+                        <span class="stat-label">PASSED</span>
+                    </div>
+                    <h3>Passed Results</h3>
+                    <p class="live-count" id="reportPass">0</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon orange">!</span>
+                        <span class="stat-label">FAILED</span>
+                    </div>
+                    <h3>Failed Results</h3>
+                    <p class="live-count" id="reportFail">0</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon purple">%</span>
+                        <span class="stat-label">PERFORMANCE</span>
+                    </div>
+                    <h3>Pass Percentage</h3>
+                    <p class="live-count" id="reportPassPercentage">0%</p>
+                </article>
+            </div>
+
+            <div class="section-heading report-table-heading">
+                <div>
+                    <h2>Semester-wise Performance</h2>
+                    <p>Results grouped by academic year and semester</p>
+                </div>
+
+                <button
+                    type="button"
+                    class="faculty-refresh-btn"
+                    onclick="exportReportsCSV()"
+                >
+                    ↓ Export CSV
+                </button>
+            </div>
+
+            <div class="faculty-table-container">
+                <table class="faculty-table">
+                    <thead>
+                        <tr>
+                            <th>Academic Year</th>
+                            <th>Semester</th>
+                            <th>Total Results</th>
+                            <th>Passed</th>
+                            <th>Failed</th>
+                            <th>Average Percentage</th>
+                            <th>Pass Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                        <tr>
+                            <td colspan="7">Loading report data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="reportCount"></p>
+        </section>
+
+        <footer>
+            © 2026 APARMS · Academic Performance Analytics & Result Management System
+        </footer>
+
+    </main>
+</div>
+<script>
+const user = JSON.parse(sessionStorage.getItem("user") || "null");
+const token = sessionStorage.getItem("token");
+
+if (!user || user.role !== "admin" || !token) {
+    window.location.replace("login.html");
+} else {
+    document.getElementById("welcomeHeading").textContent =
+        "Welcome, " + user.name;
+
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("sidebarName").textContent = user.name;
+
+    document.querySelectorAll(".avatar").forEach(function (avatar) {
+        avatar.textContent = (user.name || "A").charAt(0).toUpperCase();
+    });
+}
+
+function logout() {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    window.location.replace("login.html");
+}
+
+document.querySelectorAll(".nav-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+        document.querySelectorAll(".nav-link").forEach(function (item) {
+            item.classList.remove("active");
+        });
+        link.classList.add("active");
+    });
+});
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function (char) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[char];
+    });
+}
+
+// ================= DASHBOARD STATS =================
+
+async function loadAdminStats() {
+    try {
+        const response = await fetch("http://localhost:5000/api/admin/stats", {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to load statistics");
+        }
+
+        document.getElementById("totalStudents").textContent =
+            data.totalStudents;
+        document.getElementById("totalFaculty").textContent =
+            data.totalFaculty;
+        document.getElementById("totalResults").textContent =
+            data.totalResults;
+    } catch (error) {
+        console.error("Dashboard statistics error:", error);
+        document.getElementById("totalStudents").textContent = "Unavailable";
+        document.getElementById("totalFaculty").textContent = "Unavailable";
+        document.getElementById("totalResults").textContent = "Unavailable";
+    }
+}
+
+// ================= STUDENT MANAGEMENT =================
+function openAddStudentForm() {
+    document.getElementById("studentForm").reset();
+
+    document.getElementById("addStudentMessage").textContent = "";
+
+    document.getElementById("addStudentForm").hidden = false;
+
+    document.getElementById("studentName").focus();
+}
+
+function closeAddStudentForm() {
+    document.getElementById("addStudentForm").hidden = true;
+}
+let allStudents = [];
+
+function renderStudents(students) {
+    const tbody = document.getElementById("studentsTableBody");
+
+    if (!students.length) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9" class="empty-message">
+                    No matching student records found.
+                </td>
+            </tr>`;
+        return;
+    }
+
+    tbody.innerHTML = students.map(function (student, index) {
+        return `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${escapeHTML(student.full_name)}</td>
+                <td>${escapeHTML(student.enrollment_no)}</td>
+                <td>${escapeHTML(student.roll_no)}</td>
+                <td>${escapeHTML(student.program_name)}</td>
+                <td>${escapeHTML(student.current_semester)}</td>
+                <td>${escapeHTML(student.section)}</td>
+                <td>${escapeHTML(student.email)}</td>
+                <td>
+                    <button
+                        type="button"
+                        class="faculty-refresh-btn"
+                        onclick="openEditStudentForm(${Number(student.student_id)})">
+                        Edit
+                    </button>
+                </td>
+            </tr>`;
+    }).join("");
+}
+
+async function loadStudents() {
+    const tbody = document.getElementById("studentsTableBody");
+    const message = document.getElementById("studentMessage");
+
+    message.textContent = "Loading student records...";
+
+    try {
+        const response = await fetch("http://localhost:5000/api/students");
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Unable to fetch students");
+        }
+
+        allStudents = Array.isArray(result.data) ? result.data : [];
+        filterStudents();
+
+        message.textContent = "Total student records: " + allStudents.length;
+    } catch (error) {
+        console.error("Student loading error:", error);
+        message.textContent = "Failed to load students. Check backend/database.";
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty-message">
+                    Could not load student records.
+                </td>
+            </tr>`;
+    }
+}
+
+function filterStudents() {
+    const search = document.getElementById("studentSearch")
+        .value.trim().toLowerCase();
+
+    const filtered = allStudents.filter(function (student) {
+        return [
+            student.full_name,
+            student.enrollment_no,
+            student.roll_no,
+            student.program_name,
+            student.email,
+            student.section,
+            student.current_semester
+        ].some(value => String(value ?? "").toLowerCase().includes(search));
+    });
+
+    renderStudents(filtered);
+
+    document.getElementById("studentMessage").textContent =
+        `Showing ${filtered.length} of ${allStudents.length} students.`;
+}
+
+document.getElementById("studentSearch")
+    .addEventListener("input", filterStudents);
+
+// ================= FACULTY MANAGEMENT =================
+
+let allFaculty = [];
+function renderFaculty(facultyList) {
+    const tbody = document.getElementById("facultyTableBody");
+
+    document.getElementById("facultyCount").textContent =
+        `${facultyList.length} faculty member(s)`;
+
+    if (!facultyList.length) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">No faculty records found.</td>
+            </tr>`;
+        return;
+    }
+
+    tbody.innerHTML = facultyList.map(function (faculty) {
+        const active = faculty.is_active === true ||
+            faculty.is_active === 1 ||
+            faculty.is_active === "1";
+
+        return `
+            <tr>
+                <td>${escapeHTML(faculty.faculty_id)}</td>
+
+                <td>${escapeHTML(faculty.full_name)}</td>
+
+                <td>${escapeHTML(faculty.email)}</td>
+
+                <td>
+                    <span class="faculty-status ${active ? "active" : "inactive"}">
+                        ${active ? "Active" : "Inactive"}
+                    </span>
+                </td>
+
+                <td>
+                    <button
+                        type="button"
+                        class="faculty-refresh-btn"
+                        onclick="openEditFacultyForm(${Number(faculty.faculty_id)})">
+                        Edit
+                    </button>
+                </td>
+            </tr>`;
+    }).join("");
+}
+
+async function loadFaculty() {
+    const tbody = document.getElementById("facultyTableBody");
+    const message = document.getElementById("facultyMessage");
+
+    document.getElementById("facultyCount").textContent = "Loading...";
+
+    try {
+        const response = await fetch("http://localhost:5000/api/faculty", {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`
+            }
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Unable to load faculty");
+        }
+
+        allFaculty = Array.isArray(result.data) ? result.data : [];
+        filterFaculty();
+
+        message.textContent = allFaculty.length
+            ? "Faculty records loaded successfully."
+            : "No faculty records are available yet.";
+    } catch (error) {
+        console.error("Faculty loading error:", error);
+        document.getElementById("facultyCount").textContent = "Unable to load";
+        tbody.innerHTML = `
+            <tr><td colspan="4">Could not load faculty records.</td></tr>`;
+        message.textContent = error.message;
+    }
+}
+// OPEN EDIT FACULTY FORM
+async function openEditFacultyForm(facultyId) {
+    const faculty = allFaculty.find(function (item) {
+        return Number(item.faculty_id) === Number(facultyId);
+    });
+
+    if (!faculty) {
+        alert("Faculty record not found. Please refresh the list.");
+        return;
+    }
+
+    const formContainer = document.getElementById("editFacultyForm");
+    const message = document.getElementById("editFacultyMessage");
+
+    document.getElementById("addFacultyForm").hidden = true;
+    formContainer.hidden = false;
+    message.textContent = "Loading faculty details...";
+
+    document.getElementById("editFacultyId").value = faculty.faculty_id;
+    document.getElementById("editFacultyName").value = faculty.full_name || "";
+    document.getElementById("editFacultyEmail").value = faculty.email || "";
+    document.getElementById("editFacultyStatus").value =
+        String(
+            faculty.is_active === true ||
+            faculty.is_active === 1 ||
+            faculty.is_active === "1"
+        );
+
+    try {
+        const response = await fetch(
+            "http://localhost:5000/api/admin/departments",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Could not load departments.");
+        }
+
+        const select = document.getElementById("editFacultyDepartment");
+        select.innerHTML = '<option value="">Select department</option>';
+
+        result.data.forEach(function (department) {
+            const option = document.createElement("option");
+            option.value = department.department_id;
+            option.textContent =
+                `${department.department_code} - ${department.department_name}`;
+            select.appendChild(option);
+        });
+
+        // Current department will be selected when the API provides it.
+        const departmentId = faculty.department_id;
+
+        if (departmentId !== undefined && departmentId !== null) {
+            select.value = String(departmentId);
+        }
+
+        document.getElementById("editFacultyEmployeeCode").value =
+            faculty.employee_code || "";
+
+        message.textContent = "";
+        formContainer.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    } catch (error) {
+        console.error("Edit faculty loading error:", error);
+        message.textContent = error.message;
+    }
+}
+
+
+// CLOSE EDIT FACULTY FORM
+function closeEditFacultyForm() {
+    document.getElementById("editFacultyForm").hidden = true;
+    document.getElementById("editFacultyFormElement").reset();
+    document.getElementById("editFacultyMessage").textContent = "";
+}
+// OPEN ADD FACULTY FORM
+function openAddFacultyForm() {
+    const formContainer = document.getElementById("addFacultyForm");
+
+    formContainer.hidden = false;
+    document.getElementById("addFacultyMessage").textContent = "";
+
+    loadFacultyDepartments();
+
+    formContainer.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+
+// CLOSE ADD FACULTY FORM
+function closeAddFacultyForm() {
+    document.getElementById("addFacultyForm").hidden = true;
+    document.getElementById("addFacultyFormElement").reset();
+    document.getElementById("addFacultyMessage").textContent = "";
+}
+
+
+// LOAD DEPARTMENTS INTO DROPDOWN
+async function loadFacultyDepartments() {
+    const departmentSelect = document.getElementById("newFacultyDepartment");
+    const message = document.getElementById("addFacultyMessage");
+
+    departmentSelect.innerHTML =
+        '<option value="">Loading departments...</option>';
+
+    try {
+        const response = await fetch(
+            "http://localhost:5000/api/admin/departments",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Could not load departments.");
+        }
+
+        departmentSelect.innerHTML =
+            '<option value="">Select department</option>';
+
+        if (!Array.isArray(result.data) || result.data.length === 0) {
+            departmentSelect.innerHTML =
+                '<option value="">No departments available</option>';
+
+            message.textContent =
+                "Please add a department before adding faculty.";
+
+            return;
+        }
+
+        result.data.forEach(function (department) {
+            const option = document.createElement("option");
+
+            option.value = department.department_id;
+            option.textContent =
+                `${department.department_code} - ${department.department_name}`;
+
+            departmentSelect.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("Department loading error:", error);
+
+        departmentSelect.innerHTML =
+            '<option value="">Failed to load departments</option>';
+
+        message.textContent = error.message;
+    }
+}
+
+
+// SUBMIT ADD FACULTY FORM
+document.getElementById("addFacultyFormElement")
+    .addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const message = document.getElementById("addFacultyMessage");
+        const submitButton = this.querySelector('button[type="submit"]');
+
+        const facultyData = {
+            fullName: document.getElementById("newFacultyName").value.trim(),
+            email: document.getElementById("newFacultyEmail").value.trim(),
+            password: document.getElementById("newFacultyPassword").value,
+            employeeCode: document.getElementById("newFacultyEmployeeCode").value.trim(),
+            departmentId: document.getElementById("newFacultyDepartment").value
+        };
+
+        message.textContent = "Saving faculty...";
+        submitButton.disabled = true;
+
+        try {
+            const response = await fetch(
+                "http://localhost:5000/api/admin/faculty",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify(facultyData)
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || "Failed to add faculty.");
+            }
+
+            message.textContent = "Faculty added successfully!";
+
+            this.reset();
+
+            await loadFaculty();
+
+            if (typeof loadAdminStats === "function") {
+                await loadAdminStats();
+            }
+
+            setTimeout(function () {
+                closeAddFacultyForm();
+            }, 1200);
+
+        } catch (error) {
+            console.error("Add faculty error:", error);
+            message.textContent = error.message;
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+
+function filterFaculty() {
+    const search = document.getElementById("facultySearch")
+        .value.trim().toLowerCase();
+
+    const filtered = allFaculty.filter(function (faculty) {
+        return [
+            faculty.faculty_id,
+            faculty.full_name,
+            faculty.email
+        ].some(value => String(value ?? "").toLowerCase().includes(search));
+    });
+
+    renderFaculty(filtered);
+}
+
+document.getElementById("facultySearch")
+    .addEventListener("input", filterFaculty);
+
+// ================= RESULTS MANAGEMENT =================
+
+let allResults = [];
+
+async function loadResults() {
+    const tbody = document.getElementById("resultTableBody");
+    const count = document.getElementById("resultCount");
+    const message = document.getElementById("resultMessage");
+
+    tbody.innerHTML = `<tr><td colspan="8">Loading results...</td></tr>`;
+    count.textContent = "Loading...";
+    message.textContent = "";
+
+    try {
+        const response = await fetch(
+            "http://localhost:5000/api/admin/results",
+            {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("token")}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to load results");
+        }
+
+        allResults = Array.isArray(data.results) ? data.results : [];
+
+        renderResults(allResults);
+        populateReportFilters();
+        renderReports();
+    } catch (error) {
+        console.error("Results loading error:", error);
+
+        tbody.innerHTML =
+            `<tr><td colspan="8">Failed to load results.</td></tr>`;
+
+        count.textContent = "0 results";
+        message.textContent = error.message || "Check backend/login.";
+        document.getElementById("reportMessage").textContent =
+            "Unable to load reports because results could not be fetched.";
+    }
+}
+
+function renderResults(results) {
+    const tbody = document.getElementById("resultTableBody");
+
+    document.getElementById("resultCount").textContent =
+        `${results.length} result(s)`;
+
+    if (!results.length) {
+        tbody.innerHTML =
+            `<tr><td colspan="8">No matching results found.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = results.map(function (result) {
+        const status = String(result.result_status ?? "N/A");
+        const statusClass = status.toLowerCase();
+
+        return `
+            <tr>
+                <td>${escapeHTML(result.enrollment_no)}</td>
+                <td>${escapeHTML(result.full_name)}</td>
+                <td>${escapeHTML(result.semester_number)}</td>
+                <td>${escapeHTML(result.year_label)}</td>
+                <td>${escapeHTML(result.total_marks)} / ${escapeHTML(result.maximum_marks)}</td>
+                <td>${result.percentage == null
+                    ? "N/A"
+                    : escapeHTML(Number(result.percentage).toFixed(2) + "%")}</td>
+                <td>${result.sgpa == null
+                    ? "N/A"
+                    : escapeHTML(Number(result.sgpa).toFixed(2))}</td>
+                <td>
+                    <span class="faculty-status ${escapeHTML(statusClass)}">
+                        ${escapeHTML(status)}
+                    </span>
+                </td>
+            </tr>`;
+    }).join("");
+}
+
+function filterResults() {
+    const search = document.getElementById("resultSearch")
+        .value.trim().toLowerCase();
+
+    const filtered = allResults.filter(function (result) {
+        return [
+            result.enrollment_no,
+            result.full_name,
+            result.result_status,
+            result.year_label,
+            result.semester_number
+        ].some(value => String(value ?? "").toLowerCase().includes(search));
+    });
+
+    renderResults(filtered);
+}
+
+document.getElementById("resultSearch")
+    .addEventListener("input", filterResults);
+
+// ================= REPORT MANAGEMENT =================
+
+function populateReportFilters() {
+    const yearSelect = document.getElementById("reportYear");
+    const semesterSelect = document.getElementById("reportSemester");
+
+    const selectedYear = yearSelect.value;
+    const selectedSemester = semesterSelect.value;
+
+    const years = [...new Set(
+        allResults
+            .map(result => result.year_label)
+            .filter(value => value !== null && value !== undefined && value !== "")
+            .map(String)
+    )].sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+
+    const semesters = [...new Set(
+        allResults
+            .map(result => result.semester_number)
+            .filter(value => value !== null && value !== undefined && value !== "")
+            .map(String)
+    )].sort((a, b) => Number(a) - Number(b));
+
+    yearSelect.innerHTML =
+        '<option value="">All Academic Years</option>' +
+        years.map(year =>
+            `<option value="${escapeHTML(year)}">${escapeHTML(year)}</option>`
+        ).join("");
+
+    semesterSelect.innerHTML =
+        '<option value="">All Semesters</option>' +
+        semesters.map(semester =>
+            `<option value="${escapeHTML(semester)}">Semester ${escapeHTML(semester)}</option>`
+        ).join("");
+
+    if (years.includes(selectedYear)) yearSelect.value = selectedYear;
+    if (semesters.includes(selectedSemester)) {
+        semesterSelect.value = selectedSemester;
+    }
+}
+
+function getFilteredReportResults() {
+    const year = document.getElementById("reportYear").value;
+    const semester = document.getElementById("reportSemester").value;
+    const status = document.getElementById("reportStatus").value;
+
+    return allResults.filter(function (result) {
+        const matchesYear =
+            !year || String(result.year_label ?? "") === year;
+
+        const matchesSemester =
+            !semester ||
+            String(result.semester_number ?? "") === semester;
+
+        const matchesStatus =
+            !status ||
+            String(result.result_status ?? "").toUpperCase() === status;
+
+        return matchesYear && matchesSemester && matchesStatus;
+    });
+}
+
+function renderReports() {
+    const filtered = getFilteredReportResults();
+
+    const total = filtered.length;
+
+    const passed = filtered.filter(result =>
+        String(result.result_status ?? "").toUpperCase() === "PASS"
+    ).length;
+
+    const failed = filtered.filter(result =>
+        String(result.result_status ?? "").toUpperCase() === "FAIL"
+    ).length;
+
+    const completed = passed + failed;
+
+    const passPercentage = completed
+        ? (passed / completed) * 100
+        : 0;
+
+    document.getElementById("reportTotal").textContent = total;
+    document.getElementById("reportPass").textContent = passed;
+    document.getElementById("reportFail").textContent = failed;
+    document.getElementById("reportPassPercentage").textContent =
+        passPercentage.toFixed(2) + "%";
+
+    const groups = {};
+
+    filtered.forEach(function (result) {
+        const year = String(result.year_label ?? "Unknown");
+        const semester = String(result.semester_number ?? "Unknown");
+        const key = JSON.stringify([year, semester]);
+
+        if (!groups[key]) {
+            groups[key] = {
+                year,
+                semester,
+                total: 0,
+                passed: 0,
+                failed: 0,
+                percentageSum: 0,
+                percentageCount: 0
+            };
+        }
+
+        const group = groups[key];
+        group.total++;
+
+        const status = String(result.result_status ?? "").toUpperCase();
+
+        if (status === "PASS") group.passed++;
+        if (status === "FAIL") group.failed++;
+
+        if (result.percentage !== null &&
+            result.percentage !== undefined &&
+            result.percentage !== "" &&
+            Number.isFinite(Number(result.percentage))) {
+            group.percentageSum += Number(result.percentage);
+            group.percentageCount++;
+        }
+    });
+
+    const reportRows = Object.values(groups).sort(function (a, b) {
+        const yearCompare = b.year.localeCompare(a.year, undefined, {
+            numeric: true
+        });
+
+        return yearCompare || Number(a.semester) - Number(b.semester);
+    });
+
+    const tbody = document.getElementById("reportTableBody");
+
+    if (!reportRows.length) {
+        tbody.innerHTML =
+            `<tr><td colspan="7">No report records match these filters.</td></tr>`;
+    } else {
+        tbody.innerHTML = reportRows.map(function (group) {
+            const completedGroup = group.passed + group.failed;
+
+            const groupPassRate = completedGroup
+                ? (group.passed / completedGroup) * 100
+                : 0;
+
+            const averagePercentage = group.percentageCount
+                ? group.percentageSum / group.percentageCount
+                : null;
+
+            return `
+                <tr>
+                    <td>${escapeHTML(group.year)}</td>
+                    <td>${escapeHTML(group.semester)}</td>
+                    <td>${group.total}</td>
+                    <td>${group.passed}</td>
+                    <td>${group.failed}</td>
+                    <td>${averagePercentage === null
+                        ? "N/A"
+                        : averagePercentage.toFixed(2) + "%"}</td>
+                    <td>${groupPassRate.toFixed(2)}%</td>
+                </tr>`;
+        }).join("");
+    }
+
+    document.getElementById("reportCount").textContent =
+        `Showing ${total} result record(s) across ${reportRows.length} semester group(s).`;
+
+    document.getElementById("reportMessage").textContent =
+        total ? "Report updated successfully." :
+        "No results available for the selected filters.";
+}
+
+function resetReportFilters() {
+    document.getElementById("reportYear").value = "";
+    document.getElementById("reportSemester").value = "";
+    document.getElementById("reportStatus").value = "";
+    renderReports();
+}
+
+function exportReportsCSV() {
+    const filtered = getFilteredReportResults();
+
+    if (!filtered.length) {
+        document.getElementById("reportMessage").textContent =
+            "No records available to export.";
+        return;
+    }
+
+    const headers = [
+        "Enrollment No",
+        "Student Name",
+        "Academic Year",
+        "Semester",
+        "Total Marks",
+        "Maximum Marks",
+        "Percentage",
+        "SGPA",
+        "Result Status"
+    ];
+
+    function csvCell(value) {
+        let text = String(value ?? "");
+
+        if (/^[\s]*[=+\-@]/.test(text)) {
+            text = "'" + text;
+        }
+
+        return '"' + text.replace(/"/g, '""') + '"';
+    }
+
+    const rows = filtered.map(result => [
+        result.enrollment_no,
+        result.full_name,
+        result.year_label,
+        result.semester_number,
+        result.total_marks,
+        result.maximum_marks,
+        result.percentage,
+        result.sgpa,
+        result.result_status
+    ]);
+
+    const csv = "\uFEFF" + [headers, ...rows]
+        .map(row => row.map(csvCell).join(","))
+        .join("\r\n");
+
+    const blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "APARMS_Academic_Report.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(url);
+}
+
+document.getElementById("reportYear")
+    .addEventListener("change", renderReports);
+
+document.getElementById("reportSemester")
+    .addEventListener("change", renderReports);
+
+document.getElementById("reportStatus")
+    .addEventListener("change", renderReports);
+
+// ================= INITIAL LOAD =================
+
+if (user && user.role === "admin" && token) {
+    loadAdminStats();
+    loadStudents();
+    loadFaculty();
+    loadResults();
+}
+// ================= ADD STUDENT FORM SUBMISSION =================
+
+document.getElementById("studentForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const message = document.getElementById("addStudentMessage");
+    const submitButton = this.querySelector('button[type="submit"]');
+
+    const studentData = {
+        fullName: document.getElementById("studentName").value.trim(),
+        email: document.getElementById("studentEmail").value.trim(),
+        password: document.getElementById("studentPassword").value,
+        enrollmentNo: document.getElementById("studentEnrollment").value.trim(),
+        rollNo: document.getElementById("studentRoll").value.trim(),
+        programId: Number(document.getElementById("studentProgram").value),
+        currentSemester: Number(document.getElementById("studentSemester").value),
+        section: document.getElementById("studentSection").value.trim(),
+        admissionYear: Number(document.getElementById("studentAdmissionYear").value)
+    };
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Saving...";
+    message.textContent = "Saving student details...";
+
+    try {
+        const response = await fetch("http://localhost:5000/api/admin/students", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+            },
+            body: JSON.stringify(studentData)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Failed to add student.");
+        }
+
+        message.textContent = "Student added successfully!";
+        message.style.color = "green";
+
+        this.reset();
+
+        await loadStudents();
+        await loadAdminStats();
+
+        // Refresh reports and result count
+        await loadResults();
+
+        setTimeout(function () {
+            closeAddStudentForm();
+        }, 1200);
+
+    } catch (error) {
+        console.error("Add student error:", error);
+
+        message.textContent = error.message || "Could not save student.";
+        message.style.color = "red";
+
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Save Student";
+    }
+});
+// Open Edit Student Form
+function openEditStudentForm(studentId) {
+    const student = allStudents.find(
+        s => Number(s.student_id) === Number(studentId)
+    );
+
+    if (!student) {
+        alert("Student record not found.");
+        return;
+    }
+
+    document.getElementById("editStudentId").value = student.student_id;
+    document.getElementById("editStudentName").value = student.full_name || "";
+    document.getElementById("editStudentEmail").value = student.email || "";
+    document.getElementById("editStudentEnrollment").value =
+        student.enrollment_no || "";
+    document.getElementById("editStudentRoll").value = student.roll_no || "";
+    document.getElementById("editStudentProgram").value =
+        student.program_id || "";
+    document.getElementById("editStudentSemester").value =
+        student.current_semester || "";
+    document.getElementById("editStudentSection").value =
+        student.section || "";
+    document.getElementById("editStudentAdmissionYear").value =
+        student.admission_year || "";
+
+    document.getElementById("editStudentMessage").textContent = "";
+    document.getElementById("editStudentForm").hidden = false;
+
+    document.getElementById("editStudentForm").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+// Close Edit Student Form
+function closeEditStudentForm() {
+    document.getElementById("editStudentForm").hidden = true;
+    document.getElementById("editStudentFormElement").reset();
+    document.getElementById("editStudentMessage").textContent = "";
+}
+
+// Save Edited Student Details
+document
+    .getElementById("editStudentFormElement")
+    .addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const studentId = document.getElementById("editStudentId").value;
+        const message = document.getElementById("editStudentMessage");
+        const saveButton = this.querySelector('button[type="submit"]');
+
+        const studentData = {
+            fullName: document.getElementById("editStudentName").value.trim(),
+            email: document.getElementById("editStudentEmail").value.trim(),
+            enrollmentNo: document.getElementById("editStudentEnrollment").value.trim(),
+            rollNo: document.getElementById("editStudentRoll").value.trim(),
+            programId: Number(document.getElementById("editStudentProgram").value),
+            currentSemester: Number(document.getElementById("editStudentSemester").value),
+            section: document.getElementById("editStudentSection").value.trim(),
+            admissionYear: Number(document.getElementById("editStudentAdmissionYear").value)
+        };
+
+        message.textContent = "Saving changes...";
+        saveButton.disabled = true;
+
+        try {
+            const response = await fetch(
+                `http://localhost:5000/api/admin/students/${studentId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(studentData)
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Failed to update student.");
+            }
+
+            message.textContent = result.message || "Student updated successfully.";
+
+            await loadStudents();
+            await loadAdminStats();
+
+            closeEditStudentForm();
+            alert("Student details updated successfully!");
+        } catch (error) {
+            message.textContent = error.message;
+        } finally {
+            saveButton.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

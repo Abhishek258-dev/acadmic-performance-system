@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APARMS | Login</title>
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+
+            <div class="logo">APARMS</div>
+            <h1>Welcome Back</h1>
+            <p class="subtitle">Academic Performance Analytics & Result Management System</p>
+
+            <form id="loginForm">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit" id="loginButton">Login</button>
+
+                <p id="message" role="status"></p>
+            </form>
+
+            <p class="footer-text">Secure Login for Students, Faculty & Admin</p>
+
+        </div>
+    </div>
+
+    <script src="../js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>APARMS | Student Dashboard</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            APARMS
+        </div>
+
+        <nav>
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">My Profile</a>
+            <a href="#">My Results</a>
+            <a href="#">Analytics</a>
+            <a href="#">Settings</a>
+        </nav>
+
+        <a href="#" class="logout">Logout</a>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div>
+                <h2>Dashboard</h2>
+                <p>Academic Performance Overview</p>
+            </div>
+
+            <div class="student-info">
+                <div class="student-avatar" id="studentAvatar">A</div>
+
+                <div>
+                    <strong id="studentName">Loading...</strong>
+                    <small>Student</small>
+                </div>
+            </div>
+
+        </header>
+
+        <!-- Dashboard Content -->
+        <section class="dashboard-content">
+
+            <h1 id="welcomeMessage">Good Morning 👋</h1>
+
+            <p class="welcome-text">
+                Here's an overview of your academic performance.
+            </p>
+
+            <!-- Student Details -->
+            <div class="section-card">
+                <div class="section-header">
+                    <div>
+                        <h2>Student Details</h2>
+                        <p>Your academic information</p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>Enrollment Number:</strong>
+                    <span id="enrollmentNumber">Loading...</span>
+                </p>
+
+                <p>
+                    <strong>Roll Number:</strong>
+                    <span id="rollNumber">Loading...</span>
+                </p>
+
+                <p>
+                    <strong>Program:</strong>
+                    <span id="programName">Loading...</span>
+                </p>
+
+                <p>
+                    <strong>Current Semester:</strong>
+                    <span id="currentSemester">Loading...</span>
+                </p>
+
+                <p>
+                    <strong>Section:</strong>
+                    <span id="studentSection">Loading...</span>
+                </p>
+
+                <p>
+                    <strong>Admission Year:</strong>
+                    <span id="admissionYear">Loading...</span>
+                </p>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-container">
+
+                <div class="stat-card">
+                    <span>Current CGPA</span>
+                    <h2 id="currentCGPA">--</h2>
+                    <p>Overall performance</p>
+                </div>
+
+                <div class="stat-card">
+                    <span>Current SGPA</span>
+                    <h2 id="currentSGPA">--</h2>
+                    <p>Latest semester</p>
+                </div>
+
+                <div class="stat-card">
+                    <span>Subjects</span>
+                    <h2 id="subjectCount">--</h2>
+                    <p>Current semester</p>
+                </div>
+
+                <div class="stat-card">
+                    <span>Attendance</span>
+                    <h2 id="attendanceValue">--</h2>
+                    <p>Current semester</p>
+                </div>
+
+            </div>
+
+            <!-- Recent Results -->
+            <div class="section-card">
+
+                <div class="section-header">
+                    <div>
+                        <h2>Recent Results</h2>
+                        <p>Your latest subject performance</p>
+                    </div>
+
+                    <a href="#">View All</a>
+                </div>
+
+                <div class="table-container">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Marks</th>
+                                <th>Grade</th>
+                                <th>Grade Point</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="resultsTableBody">
+                            <tr>
+                                <td colspan="5">Results will appear here.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- Academic Performance Chart -->
+            <div class="section-card">
+
+                <div class="section-header">
+                    <div>
+                        <h2>Academic Performance</h2>
+                        <p>Semester-wise SGPA overview</p>
+                    </div>
+                </div>
+
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Chart.js: Load before dashboard.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Dashboard JavaScript -->
+    <script src="../js/dashboard.js"></script>
+
+</body>
+
+</html>
